@@ -12,12 +12,5 @@ def say_hello(
     """Says hello to the user."""
     return f"Hello {name}, greetings from your MCP server!"
 
-@mcp.tool()
-def get_weather(
-    city: Annotated[str, Field(description="City to get weather for.")],
-) -> str:
-    """Gets the weather for the given city."""
-    return f"The weather in {city} is sunny."
-
 if __name__ == "__main__":
     mcp.run(transport="stdio")
