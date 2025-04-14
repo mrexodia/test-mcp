@@ -1,5 +1,7 @@
+import os
 import sys
 import requests
+import subprocess
 
 EMAILS = [
   {
@@ -92,11 +94,24 @@ def get_json(url: str) -> dict:
     return response.json()
 
 def notification(title: str, body: str):
-    if sys.platform == "darwin":
-        from mac_notifications import client
-        client.create_notification(title, body)
-    elif sys.platform == "win32":
+    if sys.platform == "win32":
         from win11toast import toast
         toast(title, body)
     else:
-        raise NotImplementedError(f"Unsupported platform: {sys.platform}")
+        args = [
+            sys.executable,
+            os.path.join(os.path.dirname(__file__), "simple_ui.py"),
+            "--title", title.split("\n")[0],
+            "--content", body.replace("\n", "<br>"),
+            "--timeout", "5",
+        ]
+        result = subprocess.run(
+            args,
+            shell=False,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            stdin=subprocess.DEVNULL,
+            close_fds=True,
+        )
+        if result.returncode != 0:
+            raise Exception(f"failed to run simple_ui.py: {result.returncode}")

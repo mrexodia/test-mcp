@@ -5,8 +5,8 @@ description = "Simple MCP server for testing purposes."
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
-    "macos-notifications>=0.2.1 ; sys_platform == 'darwin'",
     "mcp[cli]>=1.6.0",
+    "pyside6>=6.9.0 ; sys_platform != 'win32'",
     "requests>=2.32.3",
     "win11toast>=0.35 ; sys_platform == 'win32'",
 ]
