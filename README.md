@@ -1,8 +1,8 @@
 # Test MCP
 
-Diagram: https://excalidraw.com/#json=bkU0xKSn3eoR36vkUYYVB,iNwcwHqD9bH7mzHj4UtZHA
+Diagram: https://excalidraw.com/#json=uRRaOjlO8rV6Og36vjPEj,LRARtOLrhz0VdTFIxjH8Rg
 
-MCP Clients:
+[MCP](https://modelcontextprotocol.io) Clients:
 
 - [Claude Desktop](https://claude.ai/download)
 - [Cline Extension](https://cline.bot)
