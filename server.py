@@ -1,13 +1,14 @@
 import random
+import argparse
 from typing import Annotated
 from pydantic import Field, BaseModel
 from mcp.server.fastmcp import FastMCP
-from urllib.parse import quote
+from urllib.parse import quote, urlparse
 
 from helpers import *
 
 # The log_level is necessary for Cline to work: https://github.com/jlowin/fastmcp/issues/81
-mcp = FastMCP("Test Server", log_level="ERROR")
+mcp = FastMCP("Test MCP", log_level="ERROR")
 
 @mcp.tool()
 def say_hello(
@@ -130,4 +131,19 @@ def reply_email(
     return f"ERROR: Email {uuid} not found."
 
 if __name__ == "__main__":
-    mcp.run(transport="stdio")
+    parser = argparse.ArgumentParser(description=mcp.name)
+    parser.add_argument("--transport", type=str, default="stdio", help="Transport protocol to use (stdio or http://127.0.0.1:5001)")
+    args = parser.parse_args()
+    try:
+        if args.transport == "stdio":
+            mcp.run(transport="stdio")
+        else:
+            url = urlparse(args.transport)
+            mcp.settings.host = url.hostname
+            mcp.settings.port = url.port
+            # NOTE: npx @modelcontextprotocol/inspector for debugging
+            print(f"{mcp.name} availabile at http://{mcp.settings.host}:{mcp.settings.port}/sse")
+            mcp.settings.log_level = "INFO"
+            mcp.run(transport="sse")
+    except KeyboardInterrupt:
+        pass
