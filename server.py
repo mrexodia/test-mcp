@@ -126,7 +126,7 @@ def reply_email(
     for email in EMAILS:
         if email["uuid"] == uuid:
             destination = email["sender_email"]
-            notification("Email sent!", f"Sent reply to {destination}!")
+            notification(f"Reply to {destination}", body)
             return f"Successfully replied to {destination}"
     return f"ERROR: Email {uuid} not found."
 

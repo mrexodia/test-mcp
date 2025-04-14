@@ -93,25 +93,21 @@ def get_json(url: str) -> dict:
     response.raise_for_status()
     return response.json()
 
-def notification(title: str, body: str):
-    if sys.platform == "win32":
-        from win11toast import toast
-        toast(title, body)
-    else:
-        args = [
-            sys.executable,
-            os.path.join(os.path.dirname(__file__), "simple_ui.py"),
-            "--title", title.split("\n")[0],
-            "--content", body.replace("\n", "<br>"),
-            "--timeout", "5",
-        ]
-        result = subprocess.run(
-            args,
-            shell=False,
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
-            stdin=subprocess.DEVNULL,
-            close_fds=True,
-        )
-        if result.returncode != 0:
-            raise Exception(f"failed to run simple_ui.py: {result.returncode}")
+def notification(title: str, body: str, timeout=59):
+    args = [
+        sys.executable,
+        os.path.join(os.path.dirname(__file__), "simple_ui.py"),
+        "--title", title.split("\n")[0],
+        "--content", body.replace("\n", "<br>"),
+        "--timeout", str(timeout),
+    ]
+    result = subprocess.run(
+        args,
+        shell=False,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        stdin=subprocess.DEVNULL,
+        close_fds=True,
+    )
+    if result.returncode != 0:
+        raise Exception(f"failed to run simple_ui.py: {result.returncode}")

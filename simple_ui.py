@@ -36,7 +36,6 @@ if __name__ == "__main__":
     # Set up the layout
     layout = QVBoxLayout()
     label = QLabel()
-    label.setAlignment(Qt.AlignCenter)
     label.setWordWrap(True)
 
     # Set the label to support rich text
