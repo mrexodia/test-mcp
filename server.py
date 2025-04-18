@@ -67,7 +67,7 @@ def find_inspiration() -> str:
 
 @mcp.tool()
 def get_weather(
-    city: Annotated[str, Field(description="City to get weather for.")],
+    city: Annotated[str, Field(description="City to get weather for. Do not assume the user's location, ask if unknown.")],
 ) -> str:
     """Gets the weather for the given city."""
     try:
@@ -80,14 +80,15 @@ def get_weather(
         return f"Could not coordinates for city '{city}'\n\n{e}"
 
     try:
-        url = f"https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&current=temperature_2m,relative_humidity_2m,weather_code&forecast_days=1"
+        url = f"https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&daily=weather_code,temperature_2m_min,temperature_2m_max,surface_pressure_mean,relative_humidity_2m_mean&timezone=auto&current=weather_code,temperature_2m,surface_pressure,relative_humidity_2m"
         response = get_json(url)
         current = response["current"]
-        temperature_c = current["temperature_2m"]
-        humidity = current["relative_humidity_2m"]
-        weather_code = current["weather_code"]
-        weather_description = WEATHER_CODES.get(weather_code, "Unknown weather code")
-        return f"{city}\n{weather_description}\nTemperature: {temperature_c}°C\nHumidity: {humidity}%."
+        code = current["weather_code"]
+        current["weather_code"] = WEATHER_CODES.get(code, f"Unknown weather code: {code}")
+        daily_codes = response["daily"]["weather_code"]
+        for i, code in enumerate(daily_codes):
+            daily_codes[i] = WEATHER_CODES.get(code, f"Unknown weather code: {code}")
+        return response
     except Exception as e:
         return f"Could not get weather for city '{city}'\n\n{e}"
 
