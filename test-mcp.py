@@ -2,13 +2,12 @@ import random
 import argparse
 from typing import Annotated
 from pydantic import Field, BaseModel
-from mcp.server.fastmcp import FastMCP
+from fastmcp import FastMCP
 from urllib.parse import quote, urlparse
 
 from helpers import *
 
-# The log_level is necessary for Cline to work: https://github.com/jlowin/fastmcp/issues/81
-mcp = FastMCP("Test MCP", log_level="ERROR")
+mcp = FastMCP("Test MCP")
 
 @mcp.tool()
 def say_hello(
