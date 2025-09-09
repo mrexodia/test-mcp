@@ -1,7 +1,7 @@
 import random
 import argparse
-from typing import Annotated
-from pydantic import Field, BaseModel
+from typing import Annotated, TypedDict
+from pydantic import Field
 from fastmcp import FastMCP
 from urllib.parse import quote, urlparse
 
@@ -67,7 +67,7 @@ def find_inspiration() -> str:
 @mcp.tool()
 def get_weather(
     city: Annotated[str, Field(description="City to get weather for. Do not assume the user's location, ask if unknown.")],
-) -> str:
+) -> str | dict:
     """Gets the weather for the given city."""
     try:
         url = f"https://geocoding-api.open-meteo.com/v1/search?name={quote(city)}&count=1&language=en&format=json"
@@ -91,7 +91,7 @@ def get_weather(
     except Exception as e:
         return f"Could not get weather for city '{city}'\n\n{e}"
 
-class EmailMetadata(BaseModel):
+class EmailMetadata(TypedDict):
     uuid: str
     subject: str
     sender: str

@@ -11,7 +11,7 @@ mcp = FastMCP("Minimal MCP")
 @mcp.tool()
 def get_weather(
     city: Annotated[str, Field(description="City to get weather for. Do not assume the user's location, ask if unknown.")],
-) -> str:
+) -> str | dict:
     """Gets the weather for the given city."""
     try:
         url = f"https://geocoding-api.open-meteo.com/v1/search?name={quote(city)}&count=1&language=en&format=json"

@@ -5,7 +5,7 @@ Diagram: https://excalidraw.com/#json=uRRaOjlO8rV6Og36vjPEj,LRARtOLrhz0VdTFIxjH8
 ## Requirements
 
 - [uv](https://docs.astral.sh/uv) to manage the Python environment
-- [nodejs](https://nodejs.org/en) for testing
+- [nodejs](https://nodejs.org/en/download) for testing
 - [MCP](https://modelcontextprotocol.io) clients to actually use it
   - [Claude Desktop](https://claude.ai/download)
   - [Visual Studio Code](https://vscode.dev)
@@ -33,7 +33,7 @@ To install your MCP server you need to configure an [`MCP.json`](https://gofastm
 ```json
 {
   "mcpServers": {
-    "Test MCP": {
+    "test-mcp": {
       "command": "uv",
       "args": [
         "--directory",
